@@ -89,6 +89,13 @@
                                     SelectCommand="SELECT USERID, USERID || ' - ' || USERNAME AS UserDisplay FROM SYSTEMUSER">
                                 </asp:SqlDataSource>
                             </ItemTemplate>
+                            <EditItemTemplate>
+                                 <asp:DropDownList ID="DropDownList4" runat="server" DataSourceID="UserNameSQLDatasource" DataTextField="UserDisplay" DataValueField="USERID" SelectedValue='<%# Bind("USERID") %>'>
+ </asp:DropDownList>
+ <asp:SqlDataSource ID="UserNameSQLDatasource" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" 
+     SelectCommand="SELECT USERID, USERID || ' - ' || USERNAME AS UserDisplay FROM SYSTEMUSER">
+ </asp:SqlDataSource>
+                            </EditItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Task Name">
                             <ItemTemplate>
@@ -98,6 +105,14 @@
                                     SelectCommand="SELECT TASKID, TASKID || ' - ' || TASKNAME AS TaskDisplay FROM TASK">
                                 </asp:SqlDataSource>
                             </ItemTemplate>
+                            <EditItemTemplate>
+                                  <asp:DropDownList  ID="DropDownList5" runat="server" DataSourceID="TaskNameDataSource" DataTextField="TaskDisplay" DataValueField="TASKID" SelectedValue='<%# Bind("TASKID") %>'>
+  </asp:DropDownList>
+  <asp:SqlDataSource ID="TaskNameDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>"
+      SelectCommand="SELECT TASKID, TASKID || ' - ' || TASKNAME AS TaskDisplay FROM TASK">
+  </asp:SqlDataSource>
+
+                            </EditItemTemplate>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
