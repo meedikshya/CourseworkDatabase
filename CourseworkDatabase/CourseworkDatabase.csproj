@@ -85,6 +85,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Dashboard.aspx" />
     <Content Include="Milestone.aspx" />
+    <Content Include="Navbar.aspx" />
     <Content Include="Project.aspx" />
     <Content Include="ProjectMilestone.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -114,6 +115,13 @@
     </Compile>
     <Compile Include="Milestone.aspx.designer.cs">
       <DependentUpon>Milestone.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Navbar.aspx.cs">
+      <DependentUpon>Navbar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Navbar.aspx.designer.cs">
+      <DependentUpon>Navbar.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project.aspx.cs">
       <DependentUpon>Project.aspx</DependentUpon>
