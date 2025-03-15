@@ -170,6 +170,26 @@
             font-size: 0.9rem;
             font-weight: 500;
         }
+
+        /* Style for icon buttons */
+        .icon-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            padding: 0;
+            font: inherit;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .icon-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Ensure actions column is on the right */
+        .grid-actions-column {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -214,6 +234,16 @@
                                     <label for="TASKDUEDATETextBox" class="form-label">DUE DATE:</label>
                                     <asp:TextBox ID="TASKDUEDATETextBox" runat="server" Text='<%# Bind("TASKDUEDATE") %>' CssClass="form-control" TextMode="Date" />
                                 </div>
+                                 <div class="col-md-6 mb-3">
+                                        <label for="TASKSTATUSTextBox" class="form-label">TASK STATUS:</label>
+                                        <asp:DropDownList ID="TASKSTATUSDropDownList" runat="server" CssClass="form-control" SelectedValue='<%# Bind("TASKSTATUS") %>'>
+                                            <asp:ListItem Value="Not Started">Not Started</asp:ListItem>
+                                            <asp:ListItem Value="In Progress">In Progress</asp:ListItem>
+                                            <asp:ListItem Value="Near Due">Near Due</asp:ListItem>
+                                            <asp:ListItem Value="Overdue">Overdue</asp:ListItem>
+                                            <asp:ListItem Value="Completed">Completed</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
                             </div>
                             <div class="mt-4">
                                 <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" CssClass="btn btn-primary">
@@ -231,7 +261,7 @@
 
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="TASKID" 
                     DataSourceID="SqlDataSource1" CssClass="table table-striped table-bordered table-hover" 
-                    AllowPaging="True" PageSize="10" EmptyDataText="No tasks found." BorderWidth="0px" 
+                    AllowPaging="True" EmptyDataText="No tasks found." BorderWidth="0px" 
                     OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
                     <Columns>
                         <asp:BoundField DataField="TASKID" HeaderText="ID" ReadOnly="True" SortExpression="TASKID" />
@@ -251,9 +281,7 @@
                             <ItemTemplate>
                                 <div class="d-flex align-items-center">
                                     <span class="task-status 
-                                        <%# Convert.ToDateTime(Eval("TASKDUEDATE")).Date < DateTime.Now.Date ? "task-overdue" :
-                                            (Convert.ToDateTime(Eval("TASKDUEDATE")).Date - DateTime.Now.Date).Days <= 3 ? "task-near-due" : 
-                                            "task-in-progress" %>">
+                                        <%# GetTaskStatusClass(Eval("TASKDUEDATE"), Eval("TASKSTATUS")) %>">
                                     </span>
                                     <%# Eval("TASKDUEDATE", "{0:MMM dd, yyyy}") %>
                                 </div>
@@ -262,13 +290,27 @@
                                 <asp:TextBox ID="TASKDUEDATETextBox" runat="server" Text='<%# Bind("TASKDUEDATE", "{0:yyyy-MM-dd}") %>' CssClass="form-control" TextMode="Date" />
                             </EditItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="ACTIONS">
+                         <asp:TemplateField HeaderText="STATUS" SortExpression="TASKSTATUS">
+                            <ItemTemplate>
+                                <%# Eval("TASKSTATUS") %>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="TASKSTATUSDropDownList" runat="server" CssClass="form-control" SelectedValue='<%# Bind("TASKSTATUS") %>'>
+                                    <asp:ListItem Value="Not Started">Not Started</asp:ListItem>
+                                    <asp:ListItem Value="In Progress">In Progress</asp:ListItem>
+                                    <asp:ListItem Value="Near Due">Near Due</asp:ListItem>
+                                    <asp:ListItem Value="Overdue">Overdue</asp:ListItem>
+                                    <asp:ListItem Value="Completed">Completed</asp:ListItem>
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
+                         <asp:TemplateField HeaderText="ACTIONS" ItemStyle-CssClass="grid-actions-column">
                             <ItemTemplate>
                                 <div class="d-flex justify-content-center">
                                     <asp:LinkButton ID="EditButton" runat="server" CommandName="Edit" CssClass="btn action-btn btn-edit" ToolTip="Edit Task">
                                         <i class="fas fa-edit"></i>
                                     </asp:LinkButton>
-                                    <asp:LinkButton ID="DeleteButton" runat="server" CommandName="Delete" CssClass="btn action-btn btn-delete" 
+                                    <asp:LinkButton ID="DeleteButton" runat="server" CommandName="Delete" CssClass="btn action-btn btn-delete"
                                         ToolTip="Delete Task" OnClientClick="return confirm('Are you sure you want to delete this task?');">
                                         <i class="fas fa-trash"></i>
                                     </asp:LinkButton>
@@ -297,10 +339,10 @@
         
         <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" 
             DeleteCommand="DELETE FROM &quot;TASK&quot; WHERE &quot;TASKID&quot; = :TASKID" 
-            InsertCommand="INSERT INTO &quot;TASK&quot; (&quot;TASKID&quot;, &quot;TASKNAME&quot;, &quot;TASKSTARTDATE&quot;, &quot;TASKDUEDATE&quot;) VALUES (:TASKID, :TASKNAME, :TASKSTARTDATE, :TASKDUEDATE)" 
+            InsertCommand="INSERT INTO &quot;TASK&quot; (&quot;TASKID&quot;, &quot;TASKNAME&quot;, &quot;TASKSTARTDATE&quot;, &quot;TASKDUEDATE&quot;, &quot;TASKSTATUS&quot;) VALUES (:TASKID, :TASKNAME, :TASKSTARTDATE, :TASKDUEDATE, :TASKSTATUS)" 
             ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" 
-            SelectCommand="SELECT &quot;TASKID&quot;, &quot;TASKNAME&quot;, &quot;TASKSTARTDATE&quot;, &quot;TASKDUEDATE&quot; FROM &quot;TASK&quot;" 
-            UpdateCommand="UPDATE &quot;TASK&quot; SET &quot;TASKNAME&quot; = :TASKNAME, &quot;TASKSTARTDATE&quot; = :TASKSTARTDATE, &quot;TASKDUEDATE&quot; = :TASKDUEDATE WHERE &quot;TASKID&quot; = :TASKID">
+            SelectCommand="SELECT &quot;TASKID&quot;, &quot;TASKNAME&quot;, &quot;TASKSTARTDATE&quot;, &quot;TASKDUEDATE&quot;, &quot;TASKSTATUS&quot; FROM &quot;TASK&quot;" 
+            UpdateCommand="UPDATE &quot;TASK&quot; SET &quot;TASKNAME&quot; = :TASKNAME, &quot;TASKSTARTDATE&quot; = :TASKSTARTDATE, &quot;TASKDUEDATE&quot; = :TASKDUEDATE, &quot;TASKSTATUS&quot; = :TASKSTATUS WHERE &quot;TASKID&quot; = :TASKID">
             <DeleteParameters>
                 <asp:Parameter Name="TASKID" Type="String" />
             </DeleteParameters>
@@ -309,11 +351,13 @@
                 <asp:Parameter Name="TASKNAME" Type="String" />
                 <asp:Parameter Name="TASKSTARTDATE" Type="DateTime" />
                 <asp:Parameter Name="TASKDUEDATE" Type="DateTime" />
+                <asp:Parameter Name="TASKSTATUS" Type="String" />
             </InsertParameters>
             <UpdateParameters>
                 <asp:Parameter Name="TASKNAME" Type="String" />
                 <asp:Parameter Name="TASKSTARTDATE" Type="DateTime" />
                 <asp:Parameter Name="TASKDUEDATE" Type="DateTime" />
+                <asp:Parameter Name="TASKSTATUS" Type="String" />
                 <asp:Parameter Name="TASKID" Type="String" />
             </UpdateParameters>
         </asp:SqlDataSource>
@@ -332,6 +376,35 @@
             document.getElementById('insertForm').style.display = 'none';
             document.getElementById('showInsertFormBtn').style.display = 'block';
             return false;
+        }
+    </script>
+    <script runat="server">
+        protected string GetTaskStatusClass(object dueDateObj, object taskStatusObj)
+        {
+            if (dueDateObj == null || dueDateObj == DBNull.Value || taskStatusObj == null || taskStatusObj == DBNull.Value)
+            {
+                return "task-not-started"; // Default status if data is missing
+            }
+
+            DateTime dueDate = Convert.ToDateTime(dueDateObj);
+            string taskStatus = taskStatusObj.ToString();
+
+            if (taskStatus == "Completed")
+            {
+                return "task-completed";
+            }
+
+            if (dueDate.Date < DateTime.Now.Date)
+            {
+                return "task-overdue";
+            }
+
+            if ((dueDate.Date - DateTime.Now.Date).Days <= 3)
+            {
+                return "task-near-due";
+            }
+
+            return "task-in-progress";
         }
     </script>
 </body>

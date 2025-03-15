@@ -1,5 +1,43 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Project.aspx.cs" Inherits="CourseworkDatabase.Project" %>
 
+<script runat="server">
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        // Cancel any active edit operation before changing pages
+        GridView1.EditIndex = -1;
+        GridView1.PageIndex = e.NewPageIndex;
+    }
+    
+    protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+        try {
+            // Get the dropdown from the editing row and use its value directly
+            GridViewRow row = GridView1.Rows[e.RowIndex];
+            DropDownList statusDropDown = (DropDownList)row.FindControl("EditStatusDropDown");
+            
+            if (statusDropDown != null)
+            {
+                // Manually set the status value from the dropdown
+                e.NewValues["PROJECTSTATUS"] = statusDropDown.SelectedValue;
+            }
+            else
+            {
+                // If for some reason the dropdown isn't found, use a default value
+                e.NewValues["PROJECTSTATUS"] = "Not Started";
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the error or handle it
+            e.Cancel = true;
+            
+            // Show error message
+            AlertPanel.Visible = true;
+            AlertMessage.Text = "Error updating project: " + ex.Message;
+        }
+    }
+</script>
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -272,7 +310,8 @@
 
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="PROJECTID" 
                     DataSourceID="SqlDataSource1" CssClass="table table-striped table-bordered table-hover" AllowPaging="True" 
-                    PageSize="10" EmptyDataText="No projects found." BorderWidth="0px">
+                    PageSize="10" EmptyDataText="No projects found." BorderWidth="0px" 
+                    OnPageIndexChanging="GridView1_PageIndexChanging" OnRowUpdating="GridView1_RowUpdating">
                     <Columns>
                         <asp:BoundField DataField="PROJECTID" HeaderText="ID" ReadOnly="True" SortExpression="PROJECTID" />
                         <asp:BoundField DataField="PROJECTNAME" HeaderText="NAME" SortExpression="PROJECTNAME" />
@@ -289,7 +328,8 @@
                                 </span>
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:DropDownList ID="EditStatusDropDown" runat="server" CssClass="form-select" SelectedValue='<%# Bind("PROJECTSTATUS") %>'>
+                                <asp:HiddenField ID="CurrentStatus" runat="server" Value='<%# Eval("PROJECTSTATUS") %>' />
+                                <asp:DropDownList ID="EditStatusDropDown" runat="server" CssClass="form-select">
                                     <asp:ListItem Text="Not Started" Value="Not Started"></asp:ListItem>
                                     <asp:ListItem Text="In Progress" Value="In Progress"></asp:ListItem>
                                     <asp:ListItem Text="On Hold" Value="On Hold"></asp:ListItem>
@@ -359,7 +399,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Function to show the insert form
-        document.getElementById('showInsertFormBtn').addEventListener('click', function() {
+        document.getElementById('showInsertFormBtn').addEventListener('click', function () {
             document.getElementById('insertForm').style.display = 'block';
             this.style.display = 'none';
         });
@@ -369,6 +409,61 @@
             document.getElementById('insertForm').style.display = 'none';
             document.getElementById('showInsertFormBtn').style.display = 'block';
             return false;
+        }
+        
+        // Set the dropdown value when a row enters edit mode
+        function initializeStatusDropdown() {
+            var rows = document.querySelectorAll('[id*=GridView1] tr.editing-row');
+            if (rows.length > 0) {
+                var currentRow = rows[0];
+                var hiddenField = currentRow.querySelector('[id*=CurrentStatus]');
+                var dropdown = currentRow.querySelector('[id*=EditStatusDropDown]');
+                
+                if (hiddenField && dropdown) {
+                    var currentValue = hiddenField.value;
+                    var found = false;
+                    
+                    // Try to find the value in the dropdown
+                    for (var i = 0; i < dropdown.options.length; i++) {
+                        if (dropdown.options[i].value === currentValue) {
+                            dropdown.selectedIndex = i;
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    // If not found, add it as a new option
+                    if (!found && currentValue) {
+                        var newOption = document.createElement('option');
+                        newOption.value = currentValue;
+                        newOption.text = currentValue;
+                        dropdown.add(newOption);
+                        dropdown.value = currentValue;
+                    }
+                }
+            }
+        }
+        
+        // Check for rows in edit mode when the page loads or after postback
+        window.onload = function() {
+            initializeStatusDropdown();
+        };
+        
+        // Also set up a mutation observer to detect when a row enters edit mode
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    if (mutation.target.classList.contains('editing-row')) {
+                        setTimeout(initializeStatusDropdown, 0);
+                    }
+                }
+            });
+        });
+        
+        // Start observing the grid for class changes
+        var grid = document.getElementById('<%= GridView1.ClientID %>');
+        if (grid) {
+            observer.observe(grid, { attributes: true, subtree: true });
         }
     </script>
 </body>

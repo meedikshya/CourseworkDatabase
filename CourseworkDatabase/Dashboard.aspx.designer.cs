@@ -24,6 +24,42 @@ namespace CourseworkDatabase
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// UpcomingMilestonesRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater UpcomingMilestonesRepeater;
+
+        /// <summary>
+        /// UpcomingProjectsRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater UpcomingProjectsRepeater;
+
+        /// <summary>
+        /// UpcomingTasksRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater UpcomingTasksRepeater;
+
+        /// <summary>
+        /// UpcomingSubtasksRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater UpcomingSubtasksRepeater;
+
+        /// <summary>
         /// ProjectCountForm control.
         /// </summary>
         /// <remarks>
@@ -78,42 +114,6 @@ namespace CourseworkDatabase
         protected global::System.Web.UI.WebControls.SqlDataSource UserCountDS;
 
         /// <summary>
-        /// CompletedTasksForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FormView CompletedTasksForm;
-
-        /// <summary>
-        /// CompletedTasksDS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource CompletedTasksDS;
-
-        /// <summary>
-        /// OverdueTasksForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FormView OverdueTasksForm;
-
-        /// <summary>
-        /// OverdueTasksDS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource OverdueTasksDS;
-
-        /// <summary>
         /// MilestoneCountForm control.
         /// </summary>
         /// <remarks>
@@ -132,21 +132,156 @@ namespace CourseworkDatabase
         protected global::System.Web.UI.WebControls.SqlDataSource MilestoneCountDS;
 
         /// <summary>
-        /// TaskStatusRepeater control.
+        /// UpcomingMilestoneCountForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater TaskStatusRepeater;
+        protected global::System.Web.UI.WebControls.FormView UpcomingMilestoneCountForm;
 
         /// <summary>
-        /// TaskStatusDS control.
+        /// UpcomingMilestoneCountDS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource TaskStatusDS;
+        protected global::System.Web.UI.WebControls.SqlDataSource UpcomingMilestoneCountDS;
+
+        /// <summary>
+        /// SubtaskCountForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FormView SubtaskCountForm;
+
+        /// <summary>
+        /// SubtaskCountDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SubtaskCountDS;
+
+        /// <summary>
+        /// CommentCountForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FormView CommentCountForm;
+
+        /// <summary>
+        /// CommentCountDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource CommentCountDS;
+
+        /// <summary>
+        /// ResourceCountForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FormView ResourceCountForm;
+
+        /// <summary>
+        /// ResourceCountDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource ResourceCountDS;
+
+        /// <summary>
+        /// TasksPerProjectDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource TasksPerProjectDS;
+
+        /// <summary>
+        /// TasksPerProjectRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater TasksPerProjectRepeater;
+
+        /// <summary>
+        /// SubtasksPerTaskDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SubtasksPerTaskDS;
+
+        /// <summary>
+        /// SubtasksPerTaskRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater SubtasksPerTaskRepeater;
+
+        /// <summary>
+        /// UpcomingMilestonesDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource UpcomingMilestonesDS;
+
+        /// <summary>
+        /// UpcomingProjectsDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource UpcomingProjectsDS;
+
+        /// <summary>
+        /// UpcomingTasksDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource UpcomingTasksDS;
+
+        /// <summary>
+        /// UpcomingSubtasksDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource UpcomingSubtasksDS;
+
+        /// <summary>
+        /// ProjectTaskUserDS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource ProjectTaskUserDS;
     }
 }
